@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\radzi\Downloads\SURF_bCV\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="C:\Users\radzi\Downloads\SURF_bCV\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_1eb637f710e4373979b43786463f7cc678f808b6\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\radzi\Downloads\SURF_bCV\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7f759f3f7657f68a61c35a7ab1f2b4fc7e059196">
+        <dex dex="C:\Users\radzi\Downloads\SURF_bCV\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_7fd035b686bde8af6d0b4e3be318efecd47eb984\classes.dex" />
+    </item>
+
+</items>
