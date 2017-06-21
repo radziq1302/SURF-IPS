@@ -10,9 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-
-//import org.boofcv.android.DemoVideoDisplayActivity;
-
 import com.example.radzi.surf_bcv.boofcv_klasy.DemoVideoDisplayActivity;
 
 import java.util.ArrayList;
@@ -43,13 +40,12 @@ import boofcv.struct.image.ImageGray;
 /**
  * Created by radzi on 2017-06-07.
  */
+// metoda wykonuje algorytm SURF
 
 public class pokazWzor extends DemoVideoDisplayActivity {
 
-    ProgressBar progressBar;
 
     private Handler handler;
-    Bitmap afterProcess;
     ImageView wzor;
     ImageView imageAfter;
     Bitmap wzorcowy;
@@ -57,66 +53,42 @@ public class pokazWzor extends DemoVideoDisplayActivity {
     List<BrightFeature> brajt;
     List<ScalePoint> scp;
 
-
-
-    ImageReader mImageReader;
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pokaz_wzor);
         wzor=(ImageView) findViewById(R.id.wzorzec);
         wzorcowy = BitmapFactory.decodeResource(getResources(),R.drawable.stones);
-        GrayF32 do_zmian = ConvertBitmap.bitmapToGray(wzorcowy, (GrayF32)null,null);
-        abc = (EditText) findViewById(R.id.textView);
         imageAfter = (ImageView)findViewById(R.id.imageView4);
         handler = new Handler();
-        //StratBackgroundProcess();
-
-        GrayF32 wzor1 = new GrayF32(512,512);
-        //ConvertImage.convert();
-        //ImageView wzor2 = ImageType.single(GrayF32.class);
-    }
-
-    public Bitmap processingBitmap(Bitmap src){
-        GrayF32 img = ConvertBitmap.bitmapToGray(src, (GrayF32)null,null);
-        Bitmap dest = Bitmap.createBitmap(
-                src.getWidth(), src.getHeight(), src.getConfig());
-        DetectDescribePoint<GrayF32, BrightFeature> surf = FactoryDetectDescribe.surfStable(new ConfigFastHessian(0, 2, 20, 2, 9, 4,4), null, null, GrayF32.class);
-        surf.detect(img);
-        //zamiast this.surfAlg(img);
-
-        dest = ConvertBitmap.grayToBitmap(img, Bitmap.Config.ARGB_8888);
-        int bmWidth = src.getWidth();
-        int bmHeight = src.getHeight();
-
-        return dest;
     }
 
 
     public <II extends ImageGray> void surfAlg(GrayF32 src) {
-        //GrayF32 img = ConvertBitmap.bitmapToGray(src, (GrayF32)null,null);
         GrayF32 img = src;
-
         //deklaracja typu
         Class<II> integralType = GIntegralImageOps.getIntegralType(GrayF32.class);
+
+        // ustawienie extractora nonMaxSuppression, ktory wykrywa lokalne minima i maksima intensywności dla kwadratowych subregionów.
         NonMaxSuppression extractor =
                 FactoryFeatureExtractor.nonmax(new ConfigExtract(2, 0, 5, true));
+
+        //ustawienie parametru dla hesianu
         FastHessianFeatureDetector<II> detector =
                 new FastHessianFeatureDetector<>(extractor, 40, 2, 9, 3, 2, 6); //200, 2, 9, 4, 4, 6);
-        // estimate orientation
+        // wykrycie orientacji
         OrientationIntegral<II> orientation =
                 FactoryOrientationAlgs.sliding_ii(null, integralType);
         DescribePointSurf<II> descriptor = FactoryDescribePointAlgs.<II>surfStability(null,integralType);
 
         II integral = GeneralizedImageOps.createSingleBand(integralType,img.width,img.height);
         GIntegralImageOps.transform(img, integral);
-        // wykrywanie znacznikow za pomcoa hesianu
+        // wykrywanie znacznikow za pomoca hesianu
         detector.detect(integral);
         // podanie obrazu do operacji
         orientation.setImage(integral);
         descriptor.setImage(integral);
+        //utworzenie list ScalePoint i BrightFeature
         List<ScalePoint> points = detector.getFoundPoints();
 
         List<BrightFeature> descriptions = new ArrayList<>();
@@ -126,20 +98,20 @@ public class pokazWzor extends DemoVideoDisplayActivity {
             orientation.setObjectRadius( p.scale* BoofDefaults.SURF_SCALE_TO_RADIUS);
             double angle = orientation.compute(p.x,p.y);
 
-            // wydobycie znacnzikow SURF
+            // wydobycie znacznikow SURF
             BrightFeature desc = descriptor.createDescription();
             descriptor.describe(p.x,p.y,angle,p.scale,desc);
 
             // zapis
             descriptions.add(desc);
 
-            Log.d("liczba_pkt", "value" + desc.toString());
+            //Log.d("liczba_pkt", "value" + desc.toString());
 
         }
+        // zapis wynikow
         this.brajt = descriptions;
         this.scp = points;
-        //abc.setText("dsdada");//+points.size());
-        Log.v("liczba_pkt", "value xd" + points.size());
+        //Log.v("liczba_pkt", "value xd" + points.size());
 
 
     }
