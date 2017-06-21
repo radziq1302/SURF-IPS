@@ -10,6 +10,8 @@ import boofcv.struct.feature.ScalePoint;
  * Created by radzi on 2017-06-15.
  */
 
+
+// ta klasa nic nie robi, udostępnia tylko pewną strukturę danych, która jest w stanie pomieścić informacje, które są interesujące z punktu analizy.
 public class doObliczen {
 
 

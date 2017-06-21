@@ -66,6 +66,7 @@ public class surf extends VideoDisplayActivity
 		setShowFPS(true);
     }
 /////////////////////////////////
+    ////////////////////////////
     // dalsza część odpowiada za obsługę kamery i jest szkieletem / programem zaczerpniętym z dokumentacji biblioteki Boof
     @Override
     protected Camera openConfigureCamera(Camera.CameraInfo cameraInfo )
@@ -152,16 +153,5 @@ public class surf extends VideoDisplayActivity
 
         return best;
     }
-/*    public List<BrightFeature> tePunkty (List<BrightFeature> a, List<BrightFeature> b) {
-        List<BrightFeature> c = new ArrayList<>();
-        for( BrightFeature p : a ) {
-            for( BrightFeature t : b ) {
-                if (a==b) {
-                    c.add(t);
-                }
 
-            }
-        }
-        return c;
-    }*/
 }
